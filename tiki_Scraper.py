@@ -6,6 +6,7 @@ import re
 import pandas as pd
 import time
 import logging
+import random
 from typing import List, Dict, Union, Tuple, Set
 
 logging.basicConfig(
@@ -59,7 +60,6 @@ async def fetch_product_data(
                         # Không retry, ghi lỗi và bỏ qua
                         return (product_id, "Not Found (404)")
                     elif response.status == 429:
-                        import random
                         jitter = random.uniform(0, 1)
                         delay = min(retry_delay * 2, 10) + jitter
                         logger.warning(f"Rate limit exceeded for product {product_id}, retrying in {delay:.2f}s...")
@@ -202,3 +202,4 @@ if __name__ == "__main__":
     run()
     end = time.time()
     logger.info(f"Total runtime: {end - start:.2f} seconds")
+
